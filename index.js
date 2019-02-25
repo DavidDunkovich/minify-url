@@ -32,5 +32,11 @@ app.post("/*", (req, res) => {
 //Check once a day to expire records that haven't been accessed in 14 days
 schedule.scheduleJob("* * */23 * * *", () => database.purgeOldRecords(entries));
 
+// The "catchall" handler: for any request that doesn't
+// match one above, send back React's index.html file.
+app.get('*', (req, res) => {
+  res.sendFile(path.join(__dirname+'/client/build/index.html'));
+});
+
 const port = process.env.PORT || 5000;
 app.listen(port);
