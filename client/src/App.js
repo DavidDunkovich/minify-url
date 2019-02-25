@@ -1,56 +1,119 @@
-import React, { Component } from 'react';
-import './App.css';
-import { Header, Container, Segment, Form, Button } from 'semantic-ui-react';
-import DataTable from './DataTable';
-import hash from "string-hash";
+import React, { Component } from "react";
+import {
+  Header,
+  Container,
+  Segment,
+  Form,
+  Button,
+  Icon,
+  Popup
+} from "semantic-ui-react";
+import copy from "copy-to-clipboard";
+import DataTable from "./DataTable";
+import generateRandomUrl from "./utils/generateRandomUrl";
+import getLongUrl from "./api/getLongUrl";
+import getUrls from "./api/getUrls";
+import addUrl from "./api/addUrl";
 
 class App extends Component {
-  state = { url: '', submittedHash: ''}
+  state = { longUrl: "" };
 
-  handleChange = (e, { name, value }) => this.setState({ [name]: value })
+  componentDidMount = () => {
+    //Check to see if using a short url
+    //Redirects if short url is present
+    getLongUrl();
 
-  handleSubmit = () => {
-    const { url } = this.state
+    //Retrieve any existing entries to display in table
+    this.updateData();
+  };
 
-    this.setState({ submittedUrl: url })
-  }
+  handleChange = (e, { name, value }) => this.setState({ [name]: value });
 
-  generateRandomUrl = () => {
-    let randomUrl = 'http://test.com/';
-    const safeUrlCharacters = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789-_";
-  
-    for (let i = 0; i < 50; i++){
-      randomUrl += safeUrlCharacters.charAt(Math.floor(Math.random() * safeUrlCharacters.length));
-    }
-    this.setState({ url: randomUrl });
-  }
+  getRandomUrl = () => {
+    this.setState({ longUrl: generateRandomUrl() });
+  };
 
   minify = () => {
-    const { url } = this.state;
-    fetch('/api/addUrl', {
-      method: "POST",
-      headers: {
-      'Content-type': 'application/json'
-      },
-        body: JSON.stringify({submittedUrl: url})
-      });
-  }
+    const { longUrl } = this.state;
+    addUrl(longUrl)
+      .then(response => {
+        if (response.shortUrl) {
+          this.setState({
+            shortUrl: response.shortUrl,
+            error: false
+          });
+        } else {
+          this.setState({
+            shortUrl: false,
+            error: response.error
+          });
+        }
+      })
+      .then(this.updateData());
+  };
+
+  updateData = () => {
+    getUrls().then(urlData => {
+      if (urlData.length !== 0) {
+        this.setState({ urlData });
+      }
+    });
+  };
 
   render() {
-    const { url } = this.state
+    const { longUrl, urlData, error, shortUrl } = this.state;
     return (
-      <Container style={{marginTop: '2em'}}>
-        <Header as='h5' content='Submitted By David Dunkovich'/>
-        <Header as='h1' content='Remitly Project Assignment'/>
-        <Segment padded='very' color='blue'>
+      <Container style={{ marginTop: "2em" }}>
+        <Header as="h5" content="Submitted By David Dunkovich" />
+        <Header as="h1" content="Remitly Project Assignment" />
+        <Segment padded="very" color="blue">
           <Form>
-            <Header as='h5'>Please enter in a long URL</Header>
-            <Form.Input placeholder='ie. http://test.com/dwa976awfbn12kjbdasd!@#daw124' name='url' value={url} onChange={this.handleChange} />
-            <Button content='Randomize Input' color='green' onClick={() => this.generateRandomUrl()}/>
-            <Button content='Minify' color='blue' onClick={() => this.minify()}/>
+            <Header as="h5">Please enter in a long URL</Header>
+            <Form.Input
+              placeholder="ie. http://example.com/sXw1-e_L4Y6v75PsHh8dzgDWvW6TBEBJivOxwuAAMsdhxoyPdFDmVImt6SqTS0q8UmX3xkYKg7Y"
+              name="longUrl"
+              value={longUrl}
+              onChange={this.handleChange}
+            />
+            <Button
+              content="Randomize Input"
+              color="blue"
+              onClick={() => this.getRandomUrl()}
+            />
+            <Button
+              content="Minify"
+              color="green"
+              onClick={() => this.minify()}
+            />
+            {error && (
+              <Header as="h3" color="red" textAlign="center">
+                {error}
+              </Header>
+            )}
+            {shortUrl && (
+              <>
+                <div style={{ textAlign: "center", marginTop: "2em" }}>
+                  <span style={{ fontSize: "1.3em", marginRight: ".5em" }}>
+                    Your shortened URL:{" "}
+                    <span style={{ color: "green" }}>{shortUrl}</span>
+                  </span>
+                  <Popup
+                    trigger={
+                      <Button icon circular color="green">
+                        <Icon name="copy" size="large" />
+                      </Button>
+                    }
+                    content="Link Copied!"
+                    on="click"
+                    onOpen={() => copy(shortUrl)}
+                    position="right center"
+                  />
+                </div>
+              </>
+            )}
           </Form>
         </Segment>
-        <DataTable />
+        {urlData && <DataTable urlData={urlData} />}
       </Container>
     );
   }
