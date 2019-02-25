@@ -69,7 +69,7 @@ class App extends Component {
         <Header as="h1" content="Remitly Project Assignment" />
         <Segment padded="very" color="blue">
           <Form>
-            <Header as="h5">Please enter in a URL to shorten</Header>
+            <Header as="h5">Enter a URL to minify</Header>
             <Form.Input
               placeholder="ie. http://example.com/sXw1-e_L4Y6v75PsHh8dzgDWvW6TBEBJivOxwuAAMsdhxoyPdFDmVImt6SqTS0q8UmX3xkYKg7Y"
               name="longUrl"
