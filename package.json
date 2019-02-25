@@ -2,13 +2,13 @@
   "name": "remitly-project-assignment",
   "version": "1.0.0",
   "description": "",
-  "main": "server.js",
+  "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "start": "nodemon",
     "heroku-postbuild": "cd client && npm install && npm run build"
   },
-  "author": "",
+  "author": "David Dunkovich",
   "license": "ISC",
   "dependencies": {
     "express": "^4.16.4",

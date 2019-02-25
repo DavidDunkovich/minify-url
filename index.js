@@ -1,8 +1,9 @@
 const express = require("express");
 const bodyParser = require("body-parser");
-const app = express();
 const database = require("./lokiDatabase");
 let schedule = require("node-schedule");
+
+const app = express();
 
 // Body Parser Middleware
 app.use(bodyParser.urlencoded({ extended: false }));
@@ -10,7 +11,7 @@ app.use(bodyParser.json());
 app.use(require("sanitize").middleware);
 
 // Serve static files from the React app
-// app.use(express.static(path.join(__dirname, 'client/build')));
+app.use(express.static(path.join(__dirname, "client/build")));
 let entries = database.initializeDatabase();
 
 app.get("/api/getUrls", (req, res) => {
@@ -33,4 +34,3 @@ schedule.scheduleJob("* * */23 * * *", () => database.purgeOldRecords(entries));
 
 const port = process.env.PORT || 5000;
 app.listen(port);
-console.log("App is listening on port " + port);
