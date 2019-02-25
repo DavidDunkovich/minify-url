@@ -62,13 +62,14 @@ class App extends Component {
 
   render() {
     const { longUrl, urlData, error, shortUrl } = this.state;
+    console.log(urlData)
     return (
       <Container style={{ marginTop: "2em", marginBottom: "2em"  }}>
         <Header as="h5" content="Submitted By David Dunkovich" />
         <Header as="h1" content="Remitly Project Assignment" />
         <Segment padded="very" color="blue">
           <Form>
-            <Header as="h5">Please enter in a long URL</Header>
+            <Header as="h5">Please enter in a URL to shorten</Header>
             <Form.Input
               placeholder="ie. http://example.com/sXw1-e_L4Y6v75PsHh8dzgDWvW6TBEBJivOxwuAAMsdhxoyPdFDmVImt6SqTS0q8UmX3xkYKg7Y"
               name="longUrl"
