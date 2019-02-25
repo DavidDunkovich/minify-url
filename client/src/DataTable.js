@@ -2,7 +2,7 @@ import React from "react";
 import { Table } from "semantic-ui-react";
 
 export default props => (
-  <Table celled striped color="blue">
+  <Table celled striped color="blue" fixed>
     <Table.Header>
       <Table.Row>
         <Table.HeaderCell>Hash</Table.HeaderCell>

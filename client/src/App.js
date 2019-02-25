@@ -63,7 +63,7 @@ class App extends Component {
   render() {
     const { longUrl, urlData, error, shortUrl } = this.state;
     return (
-      <Container style={{ marginTop: "2em" }}>
+      <Container style={{ marginTop: "2em", marginBottom: "2em"  }}>
         <Header as="h5" content="Submitted By David Dunkovich" />
         <Header as="h1" content="Remitly Project Assignment" />
         <Segment padded="very" color="blue">
