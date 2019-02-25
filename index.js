@@ -1,6 +1,7 @@
 const express = require("express");
 const bodyParser = require("body-parser");
 const database = require("./lokiDatabase");
+const path = require('path');
 let schedule = require("node-schedule");
 
 const app = express();
@@ -12,6 +13,7 @@ app.use(require("sanitize").middleware);
 
 // Serve static files from the React app
 app.use(express.static(path.join(__dirname, "client/build")));
+
 let entries = database.initializeDatabase();
 
 app.get("/api/getUrls", (req, res) => {
