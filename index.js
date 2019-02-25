@@ -25,11 +25,11 @@ app.post("/api/addUrl", (req, res) => {
   res.json(insertResponse);
 });
 
-// app.post("/*", (req, res) => {
-//   const lookUpResponse = database.findLongUrl(entries, req.body.windowLocation);
-//   res.json(lookUpResponse);
-//   res.end();
-// });
+app.post("/*", (req, res) => {
+  const lookUpResponse = database.findLongUrl(entries, req.body.windowLocation);
+  res.json(lookUpResponse);
+  res.end();
+});
 
 //Check once a day to expire records that haven't been accessed in 14 days
 schedule.scheduleJob("* * */23 * * *", () => database.purgeOldRecords(entries));
