@@ -65,8 +65,8 @@ class App extends Component {
     console.log(urlData)
     return (
       <Container style={{ marginTop: "2em", marginBottom: "2em"  }}>
-        <Header as="h5" content="Submitted By David Dunkovich" />
-        <Header as="h1" content="Remitly Project Assignment" />
+        <Header as="h5" content="Written By David Dunkovich" />
+        <Header as="h1" content="URL Shortener" />
         <Segment padded="very" color="blue">
           <Form>
             <Header as="h5">Enter a URL to minify</Header>

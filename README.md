@@ -1,5 +1,4 @@
-# Remitly Project Assignment
-## By David Dunkovich
+## Written By David Dunkovich
 
 1. Initlize create-react-app with semantic-ui
 2. Develop front-end with random url generator (Research safe url characters)
